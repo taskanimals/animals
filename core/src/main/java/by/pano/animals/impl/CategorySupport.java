@@ -19,7 +19,8 @@ class CategorySupport {
    * @return list of {@link Category}
    */
   static List<Category> loadCategories() {
-    final Iterable<Class<?>> klasses = ClassIndex.getAnnotated(by.pano.animals.api.annotation.Category.class);
+    final Iterable<Class<? extends Category>> klasses = ClassIndex
+        .getSubclasses(Category.class, CategorySupport.class.getClassLoader());
     return StreamSupport.stream(klasses.spliterator(), false)
         .sorted(Comparator.comparing(Class::getName))
         .map(CategorySupport::instantiate)

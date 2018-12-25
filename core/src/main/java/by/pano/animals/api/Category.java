@@ -1,5 +1,8 @@
 package by.pano.animals.api;
 
+import org.atteo.classindex.IndexSubclasses;
+
+@IndexSubclasses
 public interface Category extends Printable {
 
   /**

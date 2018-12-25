@@ -1,7 +1,5 @@
 package by.pano.animals.categories;
 
-import by.pano.animals.api.annotation.Category;
-
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Optional;
@@ -10,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-@Category
 public class NumbersCategory extends AbstractCategory {
 
   private static final String NAME = "NUMBERS";

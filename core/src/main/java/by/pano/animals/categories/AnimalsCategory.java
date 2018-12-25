@@ -1,13 +1,10 @@
 package by.pano.animals.categories;
 
 
-import by.pano.animals.api.annotation.Category;
-
 import java.io.PrintWriter;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-@Category
 public class AnimalsCategory extends AbstractCategory {
 
   private static final String NAME = "ANIMALS";

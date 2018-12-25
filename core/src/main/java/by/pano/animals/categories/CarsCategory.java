@@ -1,6 +1,5 @@
 package by.pano.animals.categories;
 
-import by.pano.animals.api.annotation.Category;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.PrintWriter;
@@ -8,7 +7,6 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-@Category
 public class CarsCategory extends AbstractCategory {
 
   private static final String NAME = "CARS";
