@@ -1,0 +1,17 @@
+target/
+
+.idea
+.classpath
+.metadata
+.project
+.settings
+maven-eclipse.xml
+*.iml
+*.ipr
+*.iws
+.DS_Store
+\#*
+*.log
+*~
+
+.checkstyle
