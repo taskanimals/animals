@@ -10,25 +10,25 @@ Requirements
 
 Testing
 -------
-####To run test with mutation and coverage calculation use:
+To run test with mutation and coverage calculation use:
 ~~~
 $ mvn clean test -P pitest
 ~~~
-####To run findbugs use:
+To run findbugs use:
 ~~~
 $ mvn clean compile -P findbugs
 ~~~
 
 Build
 -----
-####To build artifact run:
+To build artifact run:
 ~~~
 $ mvn clean package
 ~~~
 
 Run
 ---
-### after that you can run app using:
+after that you can run app using:
 ~~~
 $ java -jar core/target/animals.jar -f <file>
 ~~~
