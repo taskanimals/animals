@@ -18,7 +18,7 @@ class CategorySupport {
    * Loads list of {@link Category}.
    * @return list of {@link Category}
    */
-  static List<Category> loadCategories() {
+  static List<Category> load() {
     final Iterable<Class<? extends Category>> klasses = ClassIndex
         .getSubclasses(Category.class, CategorySupport.class.getClassLoader());
     return StreamSupport.stream(klasses.spliterator(), false)

@@ -1,24 +1,21 @@
 package by.pano.animals.impl;
 
+
 import by.pano.animals.api.Category;
-import by.pano.animals.api.Printable;
-import com.google.inject.Inject;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class Processor implements Printable {
+final class Processor{
 
   private List<Category> categories;
 
   private Category categoryToUpdate;
 
-  @Inject
   Processor(List<Category> categories) {
     this.categories = categories;
   }
@@ -26,14 +23,19 @@ final class Processor implements Printable {
   /**
    * Process input file.
    * @param path {@link Path}, which presents input file
+   * @return list of {@link Category}
    * @throws AnimalsException, if cannot read input file.
    */
-  void process(final Path path) throws AnimalsException {
+  List<Category> process(final Path path) throws AnimalsException {
+    Optional.ofNullable(path)
+        .orElseThrow(() -> new AnimalsException("Path should not be null"));
+
     try (final Stream<String> stream = Files.lines(path)) {
       stream.forEach(this::process);
     } catch (IOException e) {
       throw new AnimalsException(e.getMessage(),e);
     }
+    return categories;
   }
 
   private void process(final String line) {
@@ -49,10 +51,5 @@ final class Processor implements Printable {
         .filter(category -> category.is(line))
         .findFirst()
         .orElse(categoryToUpdate);
-  }
-
-  @Override
-  public void print(PrintWriter out) {
-    categories.forEach(category -> category.print(out));
   }
 }

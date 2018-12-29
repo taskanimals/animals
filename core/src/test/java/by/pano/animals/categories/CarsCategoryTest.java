@@ -1,14 +1,16 @@
 package by.pano.animals.categories;
 
-import by.pano.animals.BaseTest;
+import by.pano.animals.api.Category;
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class CarsCategoryTest extends BaseTest {
+class CarsCategoryTest {
   private CarsCategory category;
 
   @BeforeEach
@@ -22,10 +24,28 @@ class CarsCategoryTest extends BaseTest {
   }
 
   @Test
+  void testEquals() {
+    final Category category = new CarsCategory();
+    assertEquals(new CarsCategory(), category);
+    assertEquals(category, category);
+    assertNotEquals(null, category);
+    assertNotEquals(new AnimalsCategory(), category);
+
+    final Category category1 = new CarsCategory();
+    category.add("opel");
+    assertNotEquals(category1, category);
+  }
+
+  @Test
+  void testHasCode() {
+    final Category category = new CarsCategory();
+    assertEquals(new CarsCategory().hashCode(), category.hashCode());
+  }
+
+  @Test
   void testAddCategoryName() {
     category.add("CARS");
-    category.print(newOut());
-    assertEquals("", getOutput());
+    assertTrue(category.getItems().isEmpty());
   }
 
   @Test
@@ -39,24 +59,30 @@ class CarsCategoryTest extends BaseTest {
     category.add("bmw");
     category.add("audi");
     category.add("Audi");
-    category.print(newOut());
-    assertEquals("CARS:\n"
-        + " vw (7336a2c49b0045fa1340bf899f785e70)\n"
-        + " opel (f65b7d39472c52142ea2f4ea5e115d59)\n"
-        + " bmw (71913f59e458e026d6609cdb5a7cc53d)\n"
-        + " audi (4d9fa555e7c23996e99f1fb0e286aea8)\n", getOutput());
+    assertEquals(
+        ImmutableList.builder()
+            .add("opel")
+            .add("OPEL")
+            .add("Opel")
+            .add("vw")
+            .add("BMW")
+            .add("bmw")
+            .add("audi")
+            .add("Audi")
+        .build(), category.getItems());
   }
 
   @Test
   void testAddNull() {
     category.add(null);
-    category.print(newOut());
-    assertEquals("", getOutput());
+    assertTrue(category.getItems().isEmpty());
   }
 
   @Test
   void testIs() {
     assertTrue(category.is("CARS"));
+    assertTrue(category.is("Cars"));
+    assertTrue(category.is("cars"));
     assertFalse(category.is("test"));
   }
 

@@ -3,7 +3,7 @@ three
 two
 one
 three
-ANIMALS
+animals
 sheep
 horse
 cow
@@ -11,7 +11,7 @@ horse
 NUMBERS
 seven
 ANIMALS
-NUMBERS
+Numbers
 six
 six
 ANIMALS

@@ -54,12 +54,4 @@ class InputTest extends BaseTest {
     assertThrows(AnimalsException.class, () -> input.inputFile(null));
   }
 
-  @Test
-  void testPrintError() {
-    input.printError(newOut(), new Exception("Test message"));
-    assertEquals("\nInterrupted due to error: Test message \n\n"
-        + "usage: java -jar animals.jar -f inputFile.txt\n"
-        + " -f,--file <arg>   Input file\n", getOutput());
-  }
-
 }

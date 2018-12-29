@@ -1,11 +1,19 @@
 package by.pano.animals.api;
 
-import java.io.PrintWriter;
+import org.atteo.classindex.IndexAnnotated;
 
-public interface Printable {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@IndexAnnotated
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface Printable {
 
   /**
-   * Print self using {@link PrintWriter}.
+   * Indicates which {@link Printer} should be used for printing annotated {@link Category}.
    */
-  void print(PrintWriter out);
+  Class<? extends Printer> print() ;
 }

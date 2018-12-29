@@ -16,9 +16,9 @@ class AppTest extends BaseTest {
 
   @BeforeEach
   void beforeEach() {
-    final Processor processor = injector.getInstance(Processor.class);
     final Input input = injector.getInstance(Input.class);
-    app = new App(processor, input, newOut());
+    final Output output = injector.getInstance(Output.class);
+    app = new App(input, output, newOut());
   }
 
   @Test

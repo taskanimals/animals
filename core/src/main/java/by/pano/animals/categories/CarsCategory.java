@@ -1,43 +1,16 @@
 package by.pano.animals.categories;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import by.pano.animals.api.Category;
+import by.pano.animals.api.Printable;
+import by.pano.animals.printers.CarsPrinter;
 
-import java.io.PrintWriter;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.function.Consumer;
-
-public class CarsCategory extends AbstractCategory {
+@Printable(print = CarsPrinter.class)
+public class CarsCategory extends Category {
 
   private static final String NAME = "CARS";
 
-  private static final char COLON = ':';
-
-  private static final String FORMAT = " %s (%s)%n";
-
-  private static Consumer<String> printer(PrintWriter out) {
-    return item -> out.format(FORMAT, item.toLowerCase(), DigestUtils.md5Hex(item));
-  }
-
   @Override
-  protected String getName() {
+  public String getName() {
     return NAME;
-  }
-
-  /**
-   * {@inheritDoc}.
-   */
-  @Override
-  public void print(final PrintWriter out) {
-    Optional.of(getItems())
-        .filter(list -> !list.isEmpty())
-        .ifPresent( items -> {
-          out.println(NAME + COLON);
-          items.stream()
-              .map(String::toLowerCase)
-              .sorted(Comparator.reverseOrder())
-              .distinct()
-              .forEach(printer(out));
-        });
   }
 }

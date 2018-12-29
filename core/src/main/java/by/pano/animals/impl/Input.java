@@ -8,32 +8,31 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
 import static by.pano.animals.impl.Constants.PARAM_FILE;
-import static by.pano.animals.impl.Constants.CMD_SYNTAX;
 
 final class Input{
-
-  private final HelpFormatter formatter;
 
   private final CommandLineParser parser;
 
   private final Options options;
 
   @Inject
-  Input(HelpFormatter formatter, CommandLineParser parser, Options options) {
-    this.formatter = formatter;
+  Input(CommandLineParser parser, Options options) {
     this.parser = parser;
     this.options = options;
   }
 
+  /**
+   * Parse args.
+   * @param args command line args
+   * @return {@link Path} from args
+   * @throws AnimalsException if something goes wrong during args parsing, or file does not exists
+   */
   Path inputFile(final String[] args) throws AnimalsException {
     Optional.ofNullable(args)
       .filter(ArrayUtils::isNotEmpty)
@@ -50,10 +49,4 @@ final class Input{
     }
   }
 
-  public void printError(final PrintWriter out, final Exception exception) {
-    out.format("%nInterrupted due to error: %s %n%n", exception.getMessage());
-
-    formatter.printHelp(out, formatter.getWidth(), CMD_SYNTAX, null,
-        options,formatter.getLeftPadding(), formatter.getDescPadding(), null, false);
-  }
 }
