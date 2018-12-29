@@ -2,12 +2,19 @@ package by.pano.animals.impl;
 
 import by.pano.animals.BaseTest;
 import by.pano.animals.TestUtils;
+import by.pano.animals.api.Category;
+import by.pano.animals.categories.AnimalsCategory;
+import by.pano.animals.categories.CarsCategory;
+import by.pano.animals.categories.NumbersCategory;
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProcessorTest extends BaseTest {
 
@@ -15,67 +22,98 @@ class ProcessorTest extends BaseTest {
 
   @BeforeEach
   void beforeEach() {
-    processor = injector.getInstance(Processor.class);
+    processor = new Processor(CategorySupport.load());
   }
 
   @Test
   void testSuccess() throws URISyntaxException, AnimalsException {
-    processor.process(TestUtils.getFile("/input.txt"));
-    processor.print(newOut());
-    assertEquals("ANIMALS:\n"
-        + " cow\n"
-        + " horse\n"
-        + " moose\n"
-        + " sheep\n"
-        + "NUMBERS: \n"
-        + " six:2\n"
-        + " one:2\n"
-        + " seven:1\n"
-        + " two:1\n"
-        + " three:2\n", getOutput());
+    final List<Category> categories = processor.process(TestUtils.getFile("/input.txt"));
+
+    final Category animals = new AnimalsCategory();
+    animals.add("sheep");
+    animals.add("horse");
+    animals.add("cow");
+    animals.add("horse");
+    animals.add("moose");
+
+    final Category cars = new CarsCategory();
+
+    final Category numbers = new NumbersCategory();
+    numbers.add("one");
+    numbers.add("three");
+    numbers.add("two");
+    numbers.add("one");
+    numbers.add("three");
+    numbers.add("seven");
+    numbers.add("six");
+    numbers.add("six");
+    assertEquals(ImmutableList.of(animals, cars, numbers), categories);
   }
 
   @Test
   void testSuccess2() throws URISyntaxException, AnimalsException {
-    processor.process(TestUtils.getFile("/input2.txt"));
-    processor.print(newOut());
-    assertEquals("ANIMALS:\n"
-        + " cow\n"
-        + " horse\n"
-        + " moose\n"
-        + " sheep\n"
-        + "CARS:\n"
-        + " vw (7336a2c49b0045fa1340bf899f785e70)\n"
-        + " opel (f65b7d39472c52142ea2f4ea5e115d59)\n"
-        + " bmw (71913f59e458e026d6609cdb5a7cc53d)\n"
-        + " audi (4d9fa555e7c23996e99f1fb0e286aea8)\n"
-        + "NUMBERS: \n"
-        + " six:2\n"
-        + " one:2\n"
-        + " seven:1\n"
-        + " two:1\n"
-        + " three:2\n", getOutput());
+    final List<Category> categories = processor.process(TestUtils.getFile("/input2.txt"));
+    final Category animals = new AnimalsCategory();
+    animals.add("sheep");
+    animals.add("horse");
+    animals.add("cow");
+    animals.add("horse");
+    animals.add("moose");
+
+    final Category cars = new CarsCategory();
+    cars.add("AUDI");
+    cars.add("BMW");
+    cars.add("Audi");
+    cars.add("VW");
+    cars.add("OPEL");
+    cars.add("Opel");
+
+    final Category numbers = new NumbersCategory();
+    numbers.add("one");
+    numbers.add("three");
+    numbers.add("two");
+    numbers.add("one");
+    numbers.add("three");
+    numbers.add("seven");
+    numbers.add("six");
+    numbers.add("six");
+    assertEquals(ImmutableList.of(animals, cars, numbers), categories);
   }
 
   @Test
   void testEmptyFile() throws URISyntaxException, AnimalsException {
-    processor.process(TestUtils.getFile("/inputEmpty.txt"));
-    processor.print(newOut());
-    assertEquals("", getOutput());
+    final List<Category> categories = processor.process(TestUtils.getFile("/inputEmpty.txt"));
+    final Category animals = new AnimalsCategory();
+
+    final Category cars = new CarsCategory();
+
+    final Category numbers = new NumbersCategory();
+
+    assertEquals(ImmutableList.of(animals, cars, numbers), categories);
   }
 
   @Test
   void testFileWithNonCategoryFirstLine() throws URISyntaxException, AnimalsException {
-    processor.process(TestUtils.getFile("/input3.txt"));
-    processor.print(newOut());
-    assertEquals("ANIMALS:\n"
-        + " cow\n"
-        + " horse\n"
-        + " moose\n"
-        + " sheep\n"
-        + "NUMBERS: \n"
-        + " six:2\n"
-        + " seven:1\n", getOutput());
+    final List<Category> categories = processor.process(TestUtils.getFile("/input3.txt"));
+    final Category animals = new AnimalsCategory();
+    animals.add("sheep");
+    animals.add("horse");
+    animals.add("cow");
+    animals.add("horse");
+    animals.add("moose");
+
+    final Category cars = new CarsCategory();
+
+    final Category numbers = new NumbersCategory();
+    numbers.add("seven");
+    numbers.add("six");
+    numbers.add("six");
+    assertEquals(ImmutableList.of(animals, cars, numbers), categories);
+  }
+
+  @Test
+  void testNull()  {
+    assertThrows(AnimalsException.class, () -> processor.process(null));
   }
 
 }

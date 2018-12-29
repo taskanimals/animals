@@ -1,14 +1,16 @@
 package by.pano.animals.categories;
 
-import by.pano.animals.BaseTest;
+import by.pano.animals.api.Category;
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class NumbersCategoryTest extends BaseTest {
+class NumbersCategoryTest {
 
   private NumbersCategory category;
 
@@ -23,10 +25,28 @@ class NumbersCategoryTest extends BaseTest {
   }
 
   @Test
+  void testEquals() {
+    final Category category = new NumbersCategory();
+    assertEquals(new NumbersCategory(), category);
+    assertEquals(category, category);
+    assertNotEquals(null, category);
+    assertNotEquals(new AnimalsCategory(), category);
+
+    final Category category1 = new NumbersCategory();
+    category.add("six");
+    assertNotEquals(category1, category);
+  }
+
+  @Test
+  void testHasCode() {
+    final Category category = new NumbersCategory();
+    assertEquals(new NumbersCategory().hashCode(), category.hashCode());
+  }
+
+  @Test
   void testAddCategoryName() {
     category.add("NUMBERS");
-    category.print(newOut());
-    assertEquals("", getOutput());
+    assertTrue(category.getItems().isEmpty());
   }
 
   @Test
@@ -38,23 +58,28 @@ class NumbersCategoryTest extends BaseTest {
     category.add("three");
     category.add("three");
     category.add("three");
-    category.print(newOut());
-    assertEquals("NUMBERS: \n"
-        + " one:1\n"
-        + " three:3\n"
-        + " two:2\n", getOutput());
+    assertEquals(
+        ImmutableList.builder()
+            .add("one")
+            .add("two")
+            .add("two")
+            .add("three")
+            .add("three")
+            .add("three")
+        .build(), category.getItems());
   }
 
   @Test
   void testAddNull() {
     category.add(null);
-    category.print(newOut());
-    assertEquals("", getOutput());
+    assertTrue(category.getItems().isEmpty());
   }
 
   @Test
   void testIs() {
     assertTrue(category.is("NUMBERS"));
+    assertTrue(category.is("Numbers"));
+    assertTrue(category.is("numbers"));
     assertFalse(category.is("test"));
   }
 

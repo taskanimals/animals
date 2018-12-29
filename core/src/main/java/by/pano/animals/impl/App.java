@@ -6,16 +6,16 @@ import java.io.PrintWriter;
 
 public final class App {
 
-  private final Processor processor;
-
   private final Input input;
+
+  private final Output output;
 
   private final PrintWriter out;
 
   @Inject
-  App(Processor processor, Input input, PrintWriter out) {
-    this.processor = processor;
+  App(Input input, Output output, PrintWriter out) {
     this.input = input;
+    this.output = output;
     this.out = out;
   }
 
@@ -24,11 +24,11 @@ public final class App {
    * @param args command line args.
    */
   public void run(final String[] args) {
+    final Processor processor = new Processor(CategorySupport.load());
     try {
-      processor.process(input.inputFile(args));
-      processor.print(out);
+      output.print(out, processor.process(input.inputFile(args)));
     } catch (AnimalsException e) {
-      input.printError(out, e);
+      output.print(out, e);
     }
   }
 }
